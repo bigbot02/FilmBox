@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block titre %}Accueil{% endblock %}
+{% block contenu %}
+<h1>Bienvenue sur FilmBox</h1>
+<p class="discret">Notez les films que vous voyez, tenez votre journal de visionnage et découvrez les goûts des autres cinéphiles.</p>
+
+<form class="recherche" action="{{ url_for('films') }}" method="get">
+  <input type="search" name="q" placeholder="Rechercher un film…" style="flex:1; min-width:200px">
+  <button type="submit">Rechercher</button>
+</form>
+
+<div class="chiffres">
+  <div class="carte"><strong>{{ c.films }}</strong><span>films</span></div>
+  <div class="carte"><strong>{{ c.membres }}</strong><span>membres</span></div>
+  <div class="carte"><strong>{{ c.notes }}</strong><span>notes</span></div>
+  <div class="carte"><strong>{{ c.visionnages }}</strong><span>visionnages</span></div>
+</div>
+
+<div class="deux-colonnes">
+  <section>
+    <h2>🏆 Les mieux notés</h2>
+    {% if meilleurs %}
+    <table>
+      <tr><th>Film</th><th>Année</th><th>Moyenne</th><th>Notes</th></tr>
+      {% for m in meilleurs %}
+      <tr>
+        <td><a href="{{ url_for('film', film_id=m.id) }}">{{ m.titre }}</a></td>
+        <td>{{ m.annee }}</td>
+        <td class="note">{{ m.moyenne|num }}</td>
+        <td>{{ m.nb_notes }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <p class="discret">Films ayant reçu au moins 5 notes.</p>
+    {% else %}
+    <p>Aucun film n'a encore reçu assez de notes.</p>
+    {% endif %}
+  </section>
+
+  <section>
+    <h2>👀 Derniers visionnages</h2>
+    {% for r in recents %}
+      <p style="margin:8px 0">
+        <a href="{{ url_for('membre', pseudo=r.pseudo) }}">{{ r.pseudo }}</a> a vu
+        <a href="{{ url_for('film', film_id=r.film_id) }}">{{ r.titre }}</a><br>
+        <span class="discret">le {{ r.date_visionnage|date_fr }}</span>
+      </p>
+    {% else %}
+      <p>Aucun visionnage pour le moment.</p>
+    {% endfor %}
+  </section>
+</div>
+{% endblock %}

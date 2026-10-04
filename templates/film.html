@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block titre %}{{ f.titre }}{% endblock %}
+{% block contenu %}
+<h1>{{ f.titre }} <span class="discret">({{ f.annee }})</span></h1>
+
+<p>
+  <span class="badge">{{ f.genre }}</span>
+  {% if f.saga %}<span class="badge">Saga : {{ f.saga }}</span>{% endif %}
+  {% if f.oscar %}<span class="badge or">🏆 Oscar du meilleur film</span>{% endif %}
+  {% for t in f.tags %}<span class="badge">#{{ t }}</span>{% endfor %}
+</p>
+
+<div class="deux-colonnes">
+  <section class="carte">
+    <p><strong>Réalisation :</strong> {{ realisateurs|join(', ') or '–' }}</p>
+    <p><strong>Avec :</strong> {{ acteurs|join(', ') or '–' }}</p>
+    <p><strong>Durée :</strong> {{ f.duree|duree }}</p>
+    <p><strong>Pays :</strong> {{ f.pays|join(', ') or '–' }}</p>
+    <p><strong>Langue originale :</strong> {{ f.langue or '–' }}</p>
+  </section>
+
+  <section class="carte" style="text-align:center">
+    {% if stats.nb %}
+      <div class="gros-chiffre">{{ stats.moyenne|num }}<span class="discret" style="font-size:1rem"> / 5</span></div>
+      <div class="discret">{{ stats.nb }} note{{ 's' if stats.nb > 1 }}</div>
+    {% else %}
+      <p class="discret">Pas encore noté.<br>Soyez le premier !</p>
+    {% endif %}
+  </section>
+</div>
+
+<h2>⭐ Noter ce film</h2>
+<form class="recherche" method="post" action="{{ url_for('noter', film_id=f.id) }}">
+  <input name="pseudo" list="liste-membres" placeholder="Votre pseudo" required>
+  <datalist id="liste-membres">
+    {% for m in membres %}<option value="{{ m.pseudo }}">{% endfor %}
+  </datalist>
+  <select name="note" required>
+    {% for v in [5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5] %}
+      <option value="{{ v }}">{{ v|etoiles }} ({{ v|num(1) }})</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Noter ce film</button>
+</form>
+<p class="discret">Si vous avez déjà noté ce film, votre note est remplacée. Chaque note est aussi ajoutée à votre journal.</p>
+
+<h2>💬 Dernières notes</h2>
+{% if notes %}
+<table>
+  <tr><th>Membre</th><th>Note</th><th>Date</th></tr>
+  {% for n in notes %}
+  <tr>
+    <td><a href="{{ url_for('membre', pseudo=n.pseudo) }}">{{ n.pseudo }}</a></td>
+    <td><span class="etoiles">{{ n.note|etoiles }}</span> <span class="discret">{{ n.note|num(1) }}</span></td>
+    <td>{{ n.note_le|date_fr }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+  <p>Aucune note pour ce film.</p>
+{% endif %}
+{% endblock %}

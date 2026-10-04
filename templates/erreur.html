@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block titre %}{{ titre }}{% endblock %}
+{% block contenu %}
+<h1>{{ titre }}</h1>
+<div class="carte">
+  <p>{{ message }}</p>
+  {% if detail %}<pre class="detail">{{ detail }}</pre>{% endif %}
+  <a class="bouton" href="{{ url_for('accueil') }}">Retour à l'accueil</a>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titre %}FilmBox{% endblock %} · FilmBox</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <a class="logo" href="{{ url_for('accueil') }}">🎬 FilmBox</a>
+    <nav>
+      <a href="{{ url_for('accueil') }}">Accueil</a>
+      <a href="{{ url_for('films') }}">Films</a>
+      <a href="{{ url_for('membres') }}">Membres</a>
+      <a href="{{ url_for('statistiques') }}">Statistiques</a>
+    </nav>
+  </header>
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for categorie, texte in messages %}
+        <div class="message {{ categorie }}">{{ texte }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% block contenu %}{% endblock %}
+  </main>
+  <footer>FilmBox · le réseau social des cinéphiles</footer>
+</body>
+</html>

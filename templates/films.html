@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block titre %}Films{% endblock %}
+{% block contenu %}
+<h1>Les films</h1>
+
+<form class="recherche" method="get" action="{{ url_for('films') }}">
+  <input type="search" name="q" value="{{ q }}" placeholder="Titre du film…" style="flex:1; min-width:200px">
+  <select name="genre">
+    <option value="">Tous les genres</option>
+    {% for g in genres %}
+      <option value="{{ g }}" {{ 'selected' if g == genre }}>{{ g }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Rechercher</button>
+</form>
+
+<p class="discret">{{ total }} film{{ 's' if total > 1 }} trouvé{{ 's' if total > 1 }}</p>
+
+{% if films %}
+<div class="grille">
+  {% for f in films %}
+  <div class="carte film-carte">
+    <a class="titre" href="{{ url_for('film', film_id=f.id) }}">{{ f.titre }}</a><br>
+    <span class="discret">{{ f.annee }} · {{ f.genre }}</span><br>
+    {% if f.nb_notes %}
+      <span class="note">★ {{ f.moyenne|num }}</span>
+      <span class="discret">({{ f.nb_notes }} note{{ 's' if f.nb_notes > 1 }})</span>
+    {% else %}
+      <span class="discret">Pas encore noté</span>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+<div class="pagination">
+  {% if page > 1 %}
+    <a class="bouton" href="{{ url_for('films', q=q, genre=genre, page=page-1) }}">← Précédent</a>
+  {% endif %}
+  <span class="discret">Page {{ page }} sur {{ nb_pages }}</span>
+  {% if page < nb_pages %}
+    <a class="bouton" href="{{ url_for('films', q=q, genre=genre, page=page+1) }}">Suivant →</a>
+  {% endif %}
+</div>
+{% else %}
+  <div class="carte">Aucun résultat. Essayez un autre titre ou un autre genre.</div>
+{% endif %}
+{% endblock %}

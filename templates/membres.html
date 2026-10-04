@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block titre %}Membres{% endblock %}
+{% block contenu %}
+<h1>Les membres</h1>
+
+<form class="recherche" method="get" action="{{ url_for('membres') }}">
+  <input type="search" name="q" value="{{ q }}" placeholder="Rechercher un pseudo…" style="flex:1; min-width:200px">
+  <button type="submit">Rechercher</button>
+</form>
+<p class="discret">{{ total }} membre{{ 's' if total > 1 }}</p>
+
+{% if membres %}
+<table>
+  <tr><th>Pseudo</th><th>Ville</th><th>Inscrit le</th></tr>
+  {% for m in membres %}
+  <tr>
+    <td><a href="{{ url_for('membre', pseudo=m.pseudo) }}">{{ m.pseudo }}</a></td>
+    <td>{{ m.ville or '–' }}</td>
+    <td>{{ m.inscrit_le|date_fr }}</td>
+  </tr>
+  {% endfor %}
+</table>
+<div class="pagination">
+  {% if page > 1 %}<a class="bouton" href="{{ url_for('membres', q=q, page=page-1) }}">← Précédent</a>{% endif %}
+  <span class="discret">Page {{ page }} sur {{ nb_pages }}</span>
+  {% if page < nb_pages %}<a class="bouton" href="{{ url_for('membres', q=q, page=page+1) }}">Suivant →</a>{% endif %}
+</div>
+{% else %}
+  <div class="carte">Aucun membre trouvé.</div>
+{% endif %}
+{% endblock %}

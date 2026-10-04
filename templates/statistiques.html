@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block titre %}Statistiques{% endblock %}
+{% block contenu %}
+<h1>📊 Statistiques</h1>
+
+<h2>🤩 Classement pondéré des films</h2>
+<p class="discret">La note pondérée évite qu'un film noté une seule fois 5/5 dépasse un film très apprécié par beaucoup de membres (seuil : 5 notes).</p>
+<table>
+  <tr><th>#</th><th>Film</th><th>Notes</th><th>Moyenne</th><th>Note pondérée</th></tr>
+  {% for p in ponderes %}
+  <tr>
+    <td>{{ loop.index }}</td>
+    <td><a href="{{ url_for('film', film_id=p.id) }}">{{ p.titre }}</a></td>
+    <td>{{ p.nb_notes }}</td>
+    <td>{{ p.moyenne|num }}</td>
+    <td class="note">{{ p.ponderee|num }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>🎬 Classement des réalisateurs</h2>
+<table>
+  <tr><th>Rang</th><th>Réalisateur</th><th>Moyenne</th><th>Notes</th></tr>
+  {% for r in realisateurs %}
+  <tr><td>{{ r.rang }}</td><td>{{ r.nom }}</td><td class="note">{{ r.moyenne|num }}</td><td>{{ r.nb_notes }}</td></tr>
+  {% endfor %}
+</table>
+
+<div class="deux-colonnes">
+  <section>
+    <h2>💚 Coups de cœur et déceptions par genre</h2>
+    <table>
+      <tr><th>Genre</th><th>Notes</th><th>Coups de cœur (≥ 4,5)</th><th>Déceptions (≤ 2,5)</th></tr>
+      {% for g in genres %}
+      <tr><td>{{ g.genre }}</td><td>{{ g.nb_notes }}</td><td>{{ g.coups_de_coeur }}</td><td>{{ g.deceptions }}</td></tr>
+      {% endfor %}
+    </table>
+  </section>
+  <section>
+    <h2>🏷 Tags populaires</h2>
+    {% for t in tags %}
+      <span class="badge">#{{ t.tag }} · {{ t.nb_films }}</span>
+    {% endfor %}
+    <h2>🔥 Membres les plus actifs</h2>
+    <table>
+      <tr><th>Membre</th><th>Vus</th></tr>
+      {% for a in actifs %}
+      <tr><td><a href="{{ url_for('membre', pseudo=a.pseudo) }}">{{ a.pseudo }}</a></td><td>{{ a.nb_visionnages }}</td></tr>
+      {% endfor %}
+    </table>
+  </section>
+</div>
+{% endblock %}

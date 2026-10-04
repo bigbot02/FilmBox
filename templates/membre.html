@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block titre %}{{ u.pseudo }}{% endblock %}
+{% block contenu %}
+<h1>👤 {{ u.pseudo }}</h1>
+<p class="discret">{{ u.ville or 'Ville non renseignée' }} · membre depuis le {{ u.inscrit_le|date_fr }}</p>
+
+<div class="chiffres">
+  <div class="carte"><strong>{{ carte.nb_notes }}</strong><span>films notés</span></div>
+  <div class="carte"><strong>{{ carte.moyenne|num }}</strong><span>note moyenne</span></div>
+  <div class="carte"><strong style="font-size:1.2rem">{{ genre_prefere.genre if genre_prefere else '–' }}</strong><span>genre préféré</span></div>
+  <div class="carte">
+    <strong style="font-size:1.2rem">
+      {% if coup_de_coeur %}<a href="{{ url_for('film', film_id=coup_de_coeur.id) }}">{{ coup_de_coeur.titre }}</a>{% else %}–{% endif %}
+    </strong>
+    <span>coup de cœur</span>
+  </div>
+</div>
+
+<div class="deux-colonnes">
+  <section>
+    <h2>📖 Journal de visionnage</h2>
+    {% if journal %}
+    <table>
+      <tr><th>Date</th><th>Film</th><th>Depuis le précédent</th></tr>
+      {% for j in journal %}
+      <tr>
+        <td>{{ j.date_visionnage|date_fr }}</td>
+        <td><a href="{{ url_for('film', film_id=j.film_id) }}">{{ j.titre }}</a></td>
+        <td class="discret">{% if j.jours is none %}premier visionnage{% else %}{{ j.jours }} jour{{ 's' if j.jours > 1 }}{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <p class="discret">Les 40 derniers visionnages.</p>
+    {% else %}
+      <p>Le journal est vide.</p>
+    {% endif %}
+  </section>
+
+  <section>
+    <h2>🍿 À voir ensuite</h2>
+    {% for f in a_voir %}
+      <p style="margin:6px 0"><a href="{{ url_for('film', film_id=f.id) }}">{{ f.titre }}</a> <span class="discret">({{ f.annee }})</span></p>
+    {% else %}
+      <p>Ce membre a tout vu !</p>
+    {% endfor %}
+  </section>
+</div>
+{% endblock %}
