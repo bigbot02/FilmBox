@@ -232,3 +232,5 @@ Sous Windows, remplacer uniquement l'activation de l'environnement par :
 ```powershell
 .venv\Scripts\activate
 ```
+## Screenshots
+<img width="1685" height="826" alt="image" src="https://github.com/user-attachments/assets/cee28424-e925-4289-a405-695bd9a20a02" />
