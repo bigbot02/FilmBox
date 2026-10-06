@@ -233,4 +233,14 @@ Sous Windows, remplacer uniquement l'activation de l'environnement par :
 .venv\Scripts\activate
 ```
 ## Screenshots
+# page acceuil
 <img width="1685" height="826" alt="image" src="https://github.com/user-attachments/assets/cee28424-e925-4289-a405-695bd9a20a02" />
+
+# page films
+<img width="1672" height="818" alt="image" src="https://github.com/user-attachments/assets/b693fdde-df63-4694-8b58-298068c18fc2" />
+
+# page members
+<img width="1695" height="771" alt="image" src="https://github.com/user-attachments/assets/4579ab5d-7e0a-4678-88f2-75ef7df58516" />
+
+# page statistiques
+<img width="1675" height="819" alt="image" src="https://github.com/user-attachments/assets/8e9cc6b5-a1e0-4879-a38c-f92e49078a34" />
