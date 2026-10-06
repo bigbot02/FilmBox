@@ -17,6 +17,7 @@
     <p><strong>Durée :</strong> {{ f.duree|duree }}</p>
     <p><strong>Pays :</strong> {{ f.pays|join(', ') or '–' }}</p>
     <p><strong>Langue originale :</strong> {{ f.langue or '–' }}</p>
+    <p><strong>Vues :</strong> {{ f.nb_vues or 0 }}</p>
   </section>
 
   <section class="carte" style="text-align:center">
@@ -40,9 +41,11 @@
       <option value="{{ v }}">{{ v|etoiles }} ({{ v|num(1) }})</option>
     {% endfor %}
   </select>
+  <label style="margin-left: 10px; font-size: 0.9rem; align-self: center;">
+    <input type="checkbox" name="prive" value="1"> Entrée privée 🔒
+  </label>
   <button type="submit">Noter ce film</button>
 </form>
-<p class="discret">Si vous avez déjà noté ce film, votre note est remplacée. Chaque note est aussi ajoutée à votre journal.</p>
 
 <h2>💬 Dernières notes</h2>
 {% if notes %}
